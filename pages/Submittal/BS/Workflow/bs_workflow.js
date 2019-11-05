@@ -33,7 +33,7 @@ Page({
                 if (res.code) {
                     that.data.jsCode = res.code
                     wx.request({
-                        url: 'https://www.13564721030.cn/api/qyGetWorkflowAction',
+                        url: 'https://www.13564721030.cn/api/qyGetSC',
                         data: {
                             jscode: res.code,
                             compName: that.data.compName,
@@ -42,7 +42,7 @@ Page({
                             id: options.id,
                         },
                         success: function (res) {
-                            console.log('action: ' + res.data[0].Action)
+                            console.log('Datas: ' + res.data.Datas[0].Name)
                         }
                     })
                 } else {
