@@ -5,13 +5,10 @@
         "pages/Notice/Summary/summary",
         "pages/Notice/List/list",
         "pages/Notice/Project/project",
-        "pages/Submittal/BS/Workflow/bs_workflow",
-        "pages/Submittal/HN/Workflow/hn_workflow",
-        "pages/Submittal/XF/Workflow/xf_workflow",
-        "pages/Submittal/SC/Workflow/sc_workflow",
-        "pages/Submittal/HT/Workflow/ht_workflow",
         "pages/Result/Succeed/successed",
-        "pages/Result/Failed/failed"
+        "pages/Result/Failed/failed",
+        "pages/gcard/gcard",
+        "pages/calendar/calendar"
     ],
     "window": {
         "backgroundTextStyle": "light",

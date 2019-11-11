@@ -13,11 +13,50 @@ Page({
         let now = new Date();
         let year = now.getFullYear();
         let month = now.getMonth() + 1;
+        let nowDate = year + '-' + month + '-' +  now.getDate();
         this.dateInit();
         this.setData({
             year: year,
             month: month,
             isToday: '' + year + month + now.getDate()
+        })
+        wx.getStorage({
+            key: 'storageDate',
+            success(res) {
+                if (res.data == nowDate)
+                {
+                    wx.showToast({
+                        title: '今日已签到',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                }
+                else
+                {
+                    wx.setStorage({
+                        key: 'storageDate',
+                        data: nowDate,
+                    })
+
+                    wx.showToast({
+                        title: '今日签到成功',
+                        icon: 'success',
+                        duration: 5000
+                    })
+                }
+            },
+            fail (res) {
+                wx.setStorage({
+                    key: 'storageDate',
+                    data: nowDate,
+                })
+
+                wx.showToast({
+                    title: '今日签到成功',
+                    icon: 'success',
+                    duration: 5000
+                })
+            }
         })
     },
     dateInit: function (setYear, setMonth) {

@@ -1,3 +1,0 @@
-<!--pages/Submittal/BS/Workflow/bs_workflow.wxml-->
-<text>设计送审工作流处理</text>
-<button>驳回</button><button>通过</button>

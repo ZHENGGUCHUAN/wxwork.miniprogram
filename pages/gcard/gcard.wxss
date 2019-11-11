@@ -1,0 +1,65 @@
+/* pages/gcard/gcard.wxss */
+
+.page-body {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+textarea {
+    width: 700rpx;
+    padding: 25rpx 0;
+    overflow-y: visible;
+    text-align: left;
+}
+
+.textarea-wrp {
+    padding: 0 25rpx;
+    background-color: #fff;
+    text-align: center;
+}
+
+.page-body view {
+    width: 48%;
+}
+
+.page-section {
+    min-height: 100rpx;
+    overflow-y: visible;
+    display: flex;
+    align-items: center;
+    /* border-bottom: 2rpx solid #999; */
+    margin: 0 auto;
+    padding: 0 10rpx;
+    box-sizing: border-box;
+}
+
+.page-section:nth-child(2n) {
+    background: rgb(221, 223, 222);
+}
+
+.Sum-detail {
+    margin: 0rpx 30rpx;
+}
+
+label {
+    width: 260rpx;
+    text-align: left;
+    vertical-align: center;
+    margin-right: 20rpx;
+}
+
+.section-text {
+    width: 500rpx;
+    text-align: left;
+    vertical-align: center;
+}
+
+.Title {
+    font-weight: bold;
+}
+
+.Sum-detail:nth-child(2n) {
+    background: rgb(221, 223, 222);
+}

@@ -1,1 +1,10 @@
 /* pages/Result/Succeed/successed.wxss */
+.succ-image{
+  text-align: center;
+  margin: 100rpx 0;
+  font-weight: bold;
+}
+image{
+  width: 200rpx;
+  margin-bottom: 20rpx ;
+}

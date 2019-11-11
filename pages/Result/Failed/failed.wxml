@@ -1,2 +1,7 @@
 <!--pages/Result/Failed/failed.wxml-->
-<text>pages/Result/Failed/failed.wxml</text>
+<view class="fail-image">
+<view>
+<image src='../../../image/fail.png' mode='widthFix'></image>
+</view>
+<text>执行失败</text>
+</view>

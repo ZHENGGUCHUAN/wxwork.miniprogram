@@ -1,2 +1,7 @@
 <!--pages/Result/Succeed/successed.wxml-->
-<text>pages/Result/Succeed/successed.wxml</text>
+<view class="succ-image">
+<view>
+<image src='../../../image/success.png' mode='widthFix'></image>
+</view>
+<text>执行成功</text>
+</view>

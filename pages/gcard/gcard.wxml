@@ -1,0 +1,27 @@
+<!--pages/gcard/gcard.wxml-->
+ <!--pages/CS/CS.wxml-->
+<view class="textarea-wrp">
+  <textarea auto-height placeholder="点击添加文本"  bindinput="bindTextAreaBlur"/>
+</view>
+<view class="page-body">
+  <view  wx:if="{{actionBack.Action != null&&actionBack.Action != ''}}">
+    <button type="primary"  bindtap="clickButton" data-index="{{actionBack}}"> 驳回 </button>
+  </view>
+  <view  wx:if="{{actionforward.Action != null&&actionforward.Action != ''}}">
+    <button type="primary"  bindtap="clickButton" data-index="{{actionforward}}"> 通过 </button>
+  </view>
+
+</view>
+<view class="page-detail">
+  <view class="page-section" wx:for="{{detail}}" wx:key="{{item}}" wx:if="{{item.Type != 'Summary'}}" >
+    <label>{{item.Name}}：</label>
+    <text  class="section-text" >{{item.Value==null?'':item.Value}}</text>
+  </view>
+    <view  class="page-Summary"wx:for="{{detail}}" wx:key="{{item}}" wx:if="{{item.Type == 'Summary'}}" >
+    <label class="Title">{{item.Name}}：</label>
+    <view   class="Sum-detail"wx:for="{{item.Childs}}">
+    <label>{{item.Name}}</label>
+    <text> {{item.Value==null?'':item.Value}}</text>
+    </view>
+  </view>
+</view>
