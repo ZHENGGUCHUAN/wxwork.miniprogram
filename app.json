@@ -8,7 +8,8 @@
         "pages/Result/Succeed/successed",
         "pages/Result/Failed/failed",
         "pages/gcard/gcard",
-        "pages/calendar/calendar"
+        "pages/calendar/calendar",
+        "pages/attachment/attachment"
     ],
     "window": {
         "backgroundTextStyle": "light",

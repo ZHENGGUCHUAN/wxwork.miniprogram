@@ -1,27 +1,109 @@
-<!--pages/gcard/gcard.wxml-->
- <!--pages/CS/CS.wxml-->
 <view class="textarea-wrp">
-  <textarea auto-height placeholder="点击添加文本"  bindinput="bindTextAreaBlur"/>
+    <textarea auto-height placeholder="点击添加文本" bindinput="bindTextAreaBlur" />
 </view>
-<view class="page-body">
-  <view  wx:if="{{actionBack.Action != null&&actionBack.Action != ''}}">
-    <button type="primary"  bindtap="clickButton" data-index="{{actionBack}}"> 驳回 </button>
-  </view>
-  <view  wx:if="{{actionforward.Action != null&&actionforward.Action != ''}}">
-    <button type="primary"  bindtap="clickButton" data-index="{{actionforward}}"> 通过 </button>
-  </view>
 
+<view class="page-body">
+    <view wx:for="{{actions}}" wx:key="item" class="{{item.Type}}">
+        <button bindtap="clickButton" data-index="{{item}}" style="background:{{item.Style}}" wx:if="{{item.Action != null&&item.Action != ''}}"> {{item.Text}} </button>
+    </view>
 </view>
 <view class="page-detail">
-  <view class="page-section" wx:for="{{detail}}" wx:key="{{item}}" wx:if="{{item.Type != 'Summary'}}" >
-    <label>{{item.Name}}：</label>
-    <text  class="section-text" >{{item.Value==null?'':item.Value}}</text>
-  </view>
-    <view  class="page-Summary"wx:for="{{detail}}" wx:key="{{item}}" wx:if="{{item.Type == 'Summary'}}" >
-    <label class="Title">{{item.Name}}：</label>
-    <view   class="Sum-detail"wx:for="{{item.Childs}}">
-    <label>{{item.Name}}</label>
-    <text> {{item.Value==null?'':item.Value}}</text>
+    <view wx:for="{{detail}}" wx:key="item" wx:if="{{item.Type == 'Text'}}" class="page-s1 page-text row-cross">
+        <label>{{item.Name}}</label>
+        <text class="section-text">{{item.Value==null?'':item.Value}}</text>
     </view>
-  </view>
+    <view wx:for="{{detail}}" wx:key="item" wx:if="{{item.Type == 'Number'}}" class="page-s1 page-number row-cross">
+        <label>{{item.Name}}</label>
+        <text class="section-text">{{item.Value==null?'':item.Value}}</text>
+    </view>
+    <view wx:for="{{detail}}" wx:key="item" wx:if="{{item.Type == 'Image'}}" class="page-s1 page-image row-cross">
+        <label>{{item.Name}}</label>
+        <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="{{item.Value}}"></image>
+    </view>
+
+    <view wx:for="{{detail}}" wx:key="item" wx:if="{{item.Type == 'Summary'}}" class="page-s1 page-summary">
+        <label class="summary">{{item.Name}}</label>
+        <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Text'}}" class="page-s2 page-text row-cross">
+            <label>{{item.Name}}</label>
+            <text>{{item.Value==null?'':item.Value}}</text>
+        </view>
+        <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Number'}}" class="page-s2 page-number row-cross">
+            <label>{{item.Name}}</label>
+            <text>{{item.Value==null?'':item.Value}}</text>
+        </view>
+        <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Image'}}" class="page-s2 page-image row-cross">
+            <label>{{item.Name}}</label>
+            <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="{{item.Value}}"></image>
+        </view>
+        <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Summary'}}" class="page-s2 page-summary">
+            <label class="summary">{{item.Name}}</label>
+            <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Text'}}" class="page-s3 page-text row-cross">
+                <label>{{item.Name}}</label>
+                <text>{{item.Value==null?'':item.Value}}</text>
+            </view>
+            <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Number'}}" class="page-s3 page-number row-cross">
+                <label>{{item.Name}}</label>
+                <text>{{item.Value==null?'':item.Value}}</text>
+            </view>
+            <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Image'}}" class="page-s3 page-image row-cross">
+                <label>{{item.Name}}</label>
+                <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="{{item.Value}}"></image>
+            </view>
+            <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Summary'}}" class="page-s3 page-summary">
+                <label class="summary">{{item.Name}}</label>
+                <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Text'}}" class="page-s4 page-text row-cross">
+                    <label>{{item.Name}}</label>
+                    <text>{{item.Value==null?'':item.Value}}</text>
+                </view>
+                <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Number'}}" class="page-s4 page-number row-cross">
+                    <label>{{item.Name}}</label>
+                    <text>{{item.Value==null?'':item.Value}}</text>
+                </view>
+                <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Image'}}" class="page-s4 page-image row-cross">
+                    <label>{{item.Name}}</label>
+                    <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="{{item.Value}}"></image>
+                </view>
+                <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Summary'}}" class="page-s4 page-summary row-cross">
+                    <label class="summary">{{item.Name}}</label>
+                    <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Text'}}" class="page-s5 page-text row-cross" >
+                        <label>{{item.Name}}</label>
+                        <text>{{item.Value==null?'':item.Value}}</text>
+                    </view>
+                    <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Number'}}" class="page-s5 page-number row-cross">
+                        <label>{{item.Name}}</label>
+                        <text>{{item.Value==null?'':item.Value}}</text>
+                    </view>
+                    <view wx:for="{{item.Childs}}" wx:key="item" wx:if="{{item.Type == 'Image'}}" class="page-s5 page-image row-cross">
+                        <label>{{item.Name}}</label>
+                        <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="{{item.Value}}"></image>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="attachment-detail">
+        <label class="summary">附件</label>
+        <view wx:for="{{attachments}}" wx:key="item" class="attachments">
+            <view>
+                <label>创建时间</label>
+                <text>{{item.Created}}</text>
+            </view>
+            <view>
+                <label>创建人</label>
+                <text>{{item.CreatedBy}}</text>
+            </view>
+            <view>
+                <label>描述</label>
+                <text>{{item.Description}}</text>
+            </view>
+            <view>
+                <label>名称</label>
+                <text bindtap="ClickTap" data-Type="{{item.Uri}}">{{item.Name}}</text>
+            </view>
+            <view>
+                <label>尺寸</label>
+                <text>{{item.Size}}</text>
+            </view>
+        </view>
+    </view>
 </view>

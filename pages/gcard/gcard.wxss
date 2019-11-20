@@ -2,9 +2,17 @@
 
 .page-body {
     text-align: center;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
+    height: 100rpx;
+}
+
+.back{
+  float: left;
+}
+.forward{
+  float:right
 }
 
 textarea {
@@ -24,42 +32,85 @@ textarea {
     width: 48%;
 }
 
-.page-section {
-    min-height: 100rpx;
+/* 第一层 */
+.page-s1.page-text, .page-s1.page-number, .page-s1.page-image {
     overflow-y: visible;
     display: flex;
     align-items: center;
-    /* border-bottom: 2rpx solid #999; */
     margin: 0 auto;
-    padding: 0 10rpx;
+    padding: 10rpx 10rpx;
     box-sizing: border-box;
+    height: 100%;
 }
 
-.page-section:nth-child(2n) {
-    background: rgb(221, 223, 222);
+/* 各层依次缩进 */
+.page-s2 {
+    margin: 3rpx 20rpx;
 }
 
-.Sum-detail {
-    margin: 0rpx 30rpx;
+.page-s3 {
+    margin: 3rpx 20rpx;
 }
 
+/* 内容类型底色 */
+.page-text, .page-number, .page-image {
+    background-color: rgb(245,245,245);
+}
+
+/* 间隔行着色 */
+.row-cross:nth-child(2n) {
+    background: rgb(240,248,255);
+}
+
+/* 具有子项 */
+.page-summary {
+    height: auto;
+}
+
+/* text，number，image具有下划线 */
+.page-text, .page-number, .page-image {
+    border-bottom:  1rpx solid rgb(128,128,128);
+}
+
+/* 普通标题 */
 label {
+    height: auto;
     width: 260rpx;
     text-align: left;
-    vertical-align: center;
+    vertical-align: top;
     margin-right: 20rpx;
 }
 
-.section-text {
+/* 图形内容 */
+image {
     width: 500rpx;
-    text-align: left;
-    vertical-align: center;
+    height: 500rpx;
 }
 
-.Title {
+/* 文本内容 */
+text {
+    width: 750rpx;
+    height: auto;
+    word-break: break-all;
+}
+
+/* 总览标题 */
+.summary {
     font-weight: bold;
 }
 
-.Sum-detail:nth-child(2n) {
-    background: rgb(221, 223, 222);
+.attachment-detail {
+    border: 2rpx solid black;
+    margin: 5rpx 0;
+}
+
+/* 附件信息底色 */
+.attachments {
+    margin: 3rpx 20rpx;
+    background-color: rgb(250,250,250);
+}
+
+/* 附件信息间隔着色 */
+.attachments:nth-child(2n) {
+    background: rgb(240,248,255);
 }

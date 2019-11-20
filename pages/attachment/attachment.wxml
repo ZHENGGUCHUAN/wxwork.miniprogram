@@ -1,0 +1,2 @@
+<!--pages/attachment/attachment.wxml-->
+<web-view src="{{Url}}"></web-view>

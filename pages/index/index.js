@@ -10,6 +10,9 @@ Page({
         todayIndex: 0
     },
     onLoad: function () {
+        wx.navigateTo({
+            url: '../gcard/gcard?type=32&id=85728&subtypeCode=SC',
+        })
         let now = new Date();
         let year = now.getFullYear();
         let month = now.getMonth() + 1;
