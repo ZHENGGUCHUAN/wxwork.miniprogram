@@ -1,24 +1,14 @@
-<!--pages/calendar/calendar.wxml-->
-<!-- 日历年月 -->
-<view class='calendar_title'>
-    <view>{{year}}年{{month}}月</view>
-</view>
+<Calendar id="Calendar" bind:select="select"></Calendar>
 
-<!-- 日历主体 -->
-<view class='calendar'>
-    <view class='header'>
-        <view wx:for='{{date}}' wx:key='' class='{{(index == todayIndex) && isTodayWeek ? "weekMark" : ""}}'>{{item}}
-            <view></view>
-        </view>
-    </view>
-
-    <view class='date-box'>
-        <block wx:for='{{dateArr}}' wx:key=''>
-            <view class='{{isToday == item.isToday ? "nowDay" : ""}}'>
-                <view class='date-head' bindtap='lookHuoDong' data-year='{{year}}' data-month='{{month}}' data-datenum='{{item.dateNum}}'>
-                    <view>{{item.dateNum}}</view>
-                </view>
+<view class="bottom">
+    <view class="selectDate">{{selectVal}}</view>
+    <view class="section">
+        <form bindsubmit="bindFormSubmit" bindreset="bindFormReset">
+            <textarea class="textarea" placeholder="请输入日程安排" name="textarea" value="{{textareaVal}}" auto-focus="true"></textarea>
+            <view class="buttonSection">
+                <button form-type="submit" class="buttonSet">保存</button>
+                <button form-type="reset" class="buttonRemove">清除</button>
             </view>
-        </block>
+        </form>
     </view>
 </view>

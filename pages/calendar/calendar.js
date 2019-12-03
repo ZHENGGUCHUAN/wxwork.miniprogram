@@ -1,114 +1,211 @@
-// pages/calendar/calendar.js
-Page({
+Component({
+    //初始默认为当前日期
+    properties: {
+        defaultValue: {
+            type: String,
+            value: ''
+        },
+        //星期数组
+        weekText: {
+            type: Array,
+            value: ['日', '一', '二', '三', '四', '五', '六']
+        },
+        lastMonth: {
+            type: String,
+            value: '◀'
+        },
+        nextMonth: {
+            type: String,
+            value: '▶'
+        }
+    },
+
+    // 组件的初始数据
     data: {
+        //当月格子
+        thisMonthDays: [],
+        //上月格子
+        empytGridsBefore: [],
+        //下月格子
+        empytGridsAfter: [],
+        //显示日期
+        title: '',
+        //格式化日期
+        format: '',
+
         year: 0,
         month: 0,
-        date: ['日', '一', '二', '三', '四', '五', '六'],
-        dateArr: [],
-        isToday: 0,
-        isTodayWeek: false,
-        todayIndex: 0
+        date: 0,
+        toggleType: 'large',
+        scrollLeft: 0,
+        //常量 用于匹配是否为当天
+        YEAR: 0,
+        MONTH: 0,
+        DATE: 0
     },
-    onLoad: function () {
-        let now = new Date();
-        let year = now.getFullYear();
-        let month = now.getMonth() + 1;
-        let nowDate = year + '-' + month + '-' +  now.getDate();
-        this.dateInit();
-        this.setData({
-            year: year,
-            month: month,
-            isToday: '' + year + month + now.getDate()
-        })
-        wx.getStorage({
-            key: 'storageDate',
-            success(res) {
-                if (res.data == nowDate)
-                {
-                    wx.showToast({
-                        title: '今日已签到',
-                        icon: 'success',
-                        duration: 2000
-                    })
-                }
-                else
-                {
-                    wx.setStorage({
-                        key: 'storageDate',
-                        data: nowDate,
-                    })
+    ready: function () {
+        this.today();
+    },
 
-                    wx.showToast({
-                        title: '今日签到成功',
-                        icon: 'success',
-                        duration: 5000
+    methods: {
+        //切换展示
+        toggleType() {
+            this.setData({
+                toggleType: this.data.toggleType == 'mini' ? 'large' : 'mini'
+            })
+            //初始化日历组件UI
+            this.display(this.data.year, this.data.month, this.data.date);
+        },
+        //滚动模式
+        //当年当月当天 滚动到制定日期 否则滚动到当月1日
+        scrollCalendar(year, month, date) {
+            var that = this, scrollLeft = 0;
+            wx.getSystemInfo({
+                success(res) {
+                    //切换月份时 date为0
+                    if (date == 0) {
+                        scrollLeft = 0;
+                        //切换到当年当月 滚动到当日
+                        if (year == that.data.YEAR && month == that.data.MONTH) {
+                            scrollLeft = that.data.DATE * 45 - res.windowWidth / 2 - 22.5;
+                        }
+                    } else {
+                        // 点选具体某一天 滚到到指定日期
+                        scrollLeft = date * 45 - res.windowWidth / 2 - 22.5;
+                    }
+
+                    that.setData({
+                        scrollLeft: scrollLeft
                     })
                 }
-            },
-            fail (res) {
-                wx.setStorage({
-                    key: 'storageDate',
-                    data: nowDate,
-                })
+            })
+        },
 
-                wx.showToast({
-                    title: '今日签到成功',
-                    icon: 'success',
-                    duration: 5000
-                })
-            }
-        })
-    },
-    dateInit: function (setYear, setMonth) {
-        //全部时间的月份都是按0~11基准，显示月份才+1
-        let dateArr = [];                       //需要遍历的日历数组数据
-        let arrLen = 0;                         //dateArr的数组长度
-        let now = setYear ? new Date(setYear, setMonth) : new Date();
-        let year = setYear || now.getFullYear();
-        let nextYear = 0;
-        let month = setMonth || now.getMonth();                 //没有+1方便后面计算当月总天数
-        let nextMonth = (month + 1) > 11 ? 1 : (month + 1);
-        let startWeek = new Date(year + ',' + (month + 1) + ',' + 1).getDay();                          //目标月1号对应的星期
-        let dayNums = new Date(year, nextMonth, 0).getDate();               //获取目标月有多少天
-        let obj = {};
-        let num = 0;
-        if (month + 1 > 11) {
-            nextYear = year + 1;
-            dayNums = new Date(nextYear, nextMonth, 0).getDate();
-        }
-        arrLen = startWeek + dayNums;
-        for (let i = 0; i < arrLen; i++) {
-            if (i >= startWeek) {
-                num = i - startWeek + 1;
-                obj = {
-                    isToday: '' + year + (month + 1) + num,
-                    dateNum: num,
-                    weight: 5
-                }
-            } else {
-                obj = {};
-            }
-            dateArr[i] = obj;
-        }
-        this.setData({
-            dateArr: dateArr
-        })
-        let nowDate = new Date();
-        let nowYear = nowDate.getFullYear();
-        let nowMonth = nowDate.getMonth() + 1;
-        let nowWeek = nowDate.getDay();
-        let getYear = setYear || nowYear;
-        let getMonth = setMonth >= 0 ? (setMonth + 1) : nowMonth;
-        if (nowYear == getYear && nowMonth == getMonth) {
+        //初始化
+        display: function (year, month, date) {
             this.setData({
-                isTodayWeek: true,
-                todayIndex: nowWeek
+                year,
+                month,
+                date,
+                title: year + '年' + this.zero(month) + '月'
             })
-        } else {
+            this.createDays(year, month);
+            this.createEmptyGrids(year, month);
+
+            //滚动模糊 初始界面
+            this.scrollCalendar(year, month, date);
+        },
+        //默认选中当天 并初始化组件
+        today: function () {
+            let DATE = this.data.defaultValue ? new Date(this.data.defaultValue) : new Date(),
+                year = DATE.getFullYear(),
+                month = DATE.getMonth() + 1,
+                date = DATE.getDate(),
+                select = year + '-' + this.zero(month) + '-' + this.zero(date);
+
             this.setData({
-                isTodayWeek: false,
-                todayIndex: -1
+                format: select,
+                select: select,
+                year: year,
+                month: month,
+                date: date,
+                YEAR: year,
+                MONTH: month,
+                DATE: date,
             })
-        }
-    },
+
+            //初始化日历组件UI
+            this.display(year, month, date);
+
+            //发送事件监听
+            this.triggerEvent('select', select);
+        },
+
+        //选择 并格式化数据
+        select: function (e) {
+            let date = e.currentTarget.dataset.date,
+                select = this.data.year + '-' + this.zero(this.data.month) + '-' + this.zero(date);
+            this.setData({
+                title: this.data.year + '年' + this.zero(this.data.month) + '月' + this.zero(date) + '日',
+                select: select,
+                year: this.data.year,
+                month: this.data.month,
+                date: date
+            });
+
+            //发送事件监听
+            this.triggerEvent('select', select);
+
+            //滚动日历到选中日期
+            this.scrollCalendar(this.data.year, this.data.month, date);
+        },
+        //上个月
+        lastMonth: function () {
+            let month = this.data.month == 1 ? 12 : this.data.month - 1;
+            let year = this.data.month == 1 ? this.data.year - 1 : this.data.year;
+            //初始化日历组件UI
+            this.display(year, month, 0);
+        },
+        //下个月
+        nextMonth: function () {
+            let month = this.data.month == 12 ? 1 : this.data.month + 1;
+            let year = this.data.month == 12 ? this.data.year + 1 : this.data.year;
+            //初始化日历组件UI
+            this.display(year, month, 0);
+        },
+        //获取当月天数
+        getThisMonthDays: function (year, month) {
+            return new Date(year, month, 0).getDate();
+        },
+        // 绘制当月天数占的格子
+        createDays: function (year, month) {
+            let thisMonthDays = [],
+                days = this.getThisMonthDays(year, month);
+            for (let i = 1; i <= days; i++) {
+                thisMonthDays.push({
+                    date: i,
+                    dateFormat: this.zero(i),
+                    monthFormat: this.zero(month),
+                    week: this.data.weekText[new Date(Date.UTC(year, month - 1, i)).getDay()]
+                });
+            }
+            this.setData({
+                thisMonthDays
+            })
+        },
+        //获取当月空出的天数
+        createEmptyGrids: function (year, month) {
+            let week = new Date(Date.UTC(year, month - 1, 1)).getDay(),
+                empytGridsBefore = [],
+                empytGridsAfter = [],
+                emptyDays = (week == 0 ? 7 : week);
+            //当月天数
+            var thisMonthDays = this.getThisMonthDays(year, month);
+            //上月天数
+            var preMonthDays = month - 1 < 0
+                ? this.getThisMonthDays(year - 1, 12)
+                : this.getThisMonthDays(year, month - 1);
+
+            //空出日期
+            for (let i = 1; i <= emptyDays; i++) {
+                empytGridsBefore.push(preMonthDays - (emptyDays - i));
+            }
+
+            var after = (42 - thisMonthDays - emptyDays) - 7 >= 0
+                ? (42 - thisMonthDays - emptyDays) - 7
+                : (42 - thisMonthDays - emptyDays);
+            for (let i = 1; i <= after; i++) {
+                empytGridsAfter.push(i);
+            }
+            this.setData({
+                empytGridsAfter,
+                empytGridsBefore
+            })
+        },
+
+        //补全0
+        zero: function (i) {
+            return i >= 10 ? i : '0' + i;
+        },
+    }
 })

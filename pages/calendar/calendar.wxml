@@ -1,25 +1,39 @@
-<!--pages/calendar/calendar.wxml-->
-<!-- 日历年月 -->
-<view class='calendar_title'>
-    <view>{{year}}年{{month}}月</view>
-</view>
-
-<!-- 日历主体 -->
 <view class='calendar'>
-    <view class='header'>
-        <view wx:for='{{date}}' wx:key='' class='{{(index == todayIndex) && isTodayWeek ? "weekMark" : ""}}'>{{item}}
-            <view></view>
-        </view>
+    <!--显示当前年月日-->
+    <view class='calendar-title'>
+        <view class='item ctrl' bindtap='lastMonth'>{{lastMonth}}</view>
+        <view class='item title'>{{title}}</view>
+        <view class='item ctrl' bindtap='nextMonth'>{{nextMonth}}</view>
+        <view class='item ctrl today' bindtap='today'>今天</view>
     </view>
 
-    <view class='date-box'>
-        <block wx:for='{{dateArr}}' wx:key=''>
-            <view class='{{isToday == item.isToday ? "nowDay" : ""}}'>
-                <view class='date-head' bindtap='lookHuoDong' data-year='{{year}}' data-month='{{month}}' data-datenum='{{item.dateNum}}'>
-                    <view>{{item.dateNum}}</view>
-                </view>
+    <!-- ============滚动展示============  -->
+    <view hidden="{{ toggleType == 'large' }}">
+        <scroll-view scroll-left="{{scrollLeft}}" scroll-x scroll-with-animation class="calendar-x">
+            <view class='grid' wx:for='{{thisMonthDays}}' wx:key='{{indx}}'>
+                <view class='self' wx:if="{{ format === year+'-'+item.monthFormat+'-'+item.dateFormat }}"></view>
+                <view class="wrap {{ select === year+'-'+item.monthFormat+'-'+item.dateFormat ? 'select' :''}}" bindtap='select' data-date='{{item.date}}'>{{item.date}}</view>
             </view>
-        </block>
+        </scroll-view>
     </view>
 
+    <!-- ============平铺展示============  -->
+    <!--遍历星期-->
+    <view class='calendar-week' hidden="{{ toggleType == 'mini' }}">
+        <view wx:for='{{weekText}}' class='item' wx:key='{{item}}'>{{item}}</view>
+    </view>
+
+    <view class='calendar-container' hidden="{{ toggleType == 'mini' }}">
+        <!--上个月占位格子-->
+        <view class='grid gray' wx:for='{{empytGridsBefore}}' wx:key='{{item}}'>{{item}}</view>
+
+        <!--当月格子-->
+        <view class='grid' wx:for='{{thisMonthDays}}' wx:key='{{indx}}'>
+            <view class='self' wx:if="{{ format === year+'-'+item.monthFormat+'-'+item.dateFormat }}"></view>
+            <view class="wrap {{ select === year+'-'+item.monthFormat+'-'+item.dateFormat ? 'select' :''}}" bindtap='select' data-date='{{item.date}}'>{{item.date}}</view>
+        </view>
+
+        <!--下个月占位格子-->
+        <view class='grid gray' wx:for='{{empytGridsAfter}}' wx:key='{{item}}'>{{item}}</view>
+    </view>
 </view>

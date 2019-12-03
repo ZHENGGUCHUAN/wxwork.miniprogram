@@ -35,6 +35,7 @@ Page({
                             gcardType: that.options.type,
                             subtypeCode: that.options.subtypeCode,
                             gcardId: that.options.id,
+                            notice: that.options.notice,
                             opinion: that.data.opinion,
                             status: value.Status,
                             action: value.Action,
@@ -108,7 +109,7 @@ Page({
                     }),
                     that.options = options
                     wx.request({
-                        url: 'https://www.13564721030.cn/api/qyGetGcard',
+                        url: 'https://www.13564721030.cn/api/qyGetGCard',
                         data: {
                             jscode: res.code,
                             compName: that.data.compName,
@@ -123,6 +124,9 @@ Page({
                                 actions: res.data.Actions,
                                 attachments: res.data.Attachments
                             })
+                        },
+                        fail: function (err) {
+                            console.log(err)
                         },
                         complete: function (res) {
                             wx.hideLoading();
